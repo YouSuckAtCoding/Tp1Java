@@ -1,0 +1,11 @@
+services:
+  mysql:
+    container_name: 'mysqltp1container'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=tp1database'
+      - 'MYSQL_PASSWORD=Numsey@Password!'
+      - 'MYSQL_ROOT_PASSWORD=Numsey@Password!!'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3308:3306'
