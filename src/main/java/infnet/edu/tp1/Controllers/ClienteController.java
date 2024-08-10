@@ -3,6 +3,8 @@ package infnet.edu.tp1.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,20 +35,17 @@ public class ClienteController {
     private ClienteRepository _clienteRepository;
 
     @GetMapping(GetAllEndpoint)
-    public ResponseEntity<?> GetAll()
-    {
+    public ResponseEntity<?> GetAll() {
         var result = _clienteRepository.findAll();
         return new ResponseEntity<List<Cliente>>(result, HttpStatus.OK);
     }
 
     @PostMapping(CreateEndpoint)
-    public ResponseEntity<?> CreateCliente(@RequestBody CreateClienteRequest request)
-    {
+    public ResponseEntity<?> CreateCliente(@RequestBody CreateClienteRequest request) {
         Cliente cliente = new Cliente();
         cliente = cliente.MapToCliente(request);
 
-        if(cliente.invalid)
-        {
+        if (cliente.invalid) {
             return new ResponseEntity<>("Invalid Object", HttpStatus.BAD_REQUEST);
         }
 
@@ -57,17 +56,15 @@ public class ClienteController {
     }
 
     @PutMapping(UpdateEndpoint)
-    public ResponseEntity<?> UpdateCliente(@RequestBody UpdateClienteRequest request)
-    {
+    public ResponseEntity<?> UpdateCliente(@RequestBody UpdateClienteRequest request) {
         Cliente cliente = new Cliente();
         cliente = cliente.MapToCliente(request);
 
-        if(cliente.invalid)
+        if (cliente.invalid)
             return new ResponseEntity<>("Invalid Object", HttpStatus.BAD_REQUEST);
-        
-        if(_clienteRepository.findById(cliente.id).get() == null)
+
+        if (_clienteRepository.findById(cliente.id).get() == null)
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-        
 
         _clienteRepository.saveAndFlush(cliente);
 
@@ -76,19 +73,14 @@ public class ClienteController {
     }
 
     @DeleteMapping(DeleteEndpoint)
-    public ResponseEntity<?> DeleteCliente(@RequestParam long id)
-    {
-        if(_clienteRepository.findById(id).get() == null)
+    public ResponseEntity<?> DeleteCliente(@RequestParam long id) {
+        if (_clienteRepository.findById(id).get() == null)
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
-            
+
         _clienteRepository.deleteById(id);
 
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
 
     }
-
-
-
-
 
 }
